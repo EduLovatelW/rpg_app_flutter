@@ -16,6 +16,19 @@ class _HomeViewState extends State<HomeView> {
   final List<Heroi> _personagens = [];
   final List<BatalhaRegistro> _historico = [];
 
+  void _onBatalhaRealizada(BatalhaRegistro registro) {
+    setState(() {
+      _historico.add(registro);
+      for (final heroi in _personagens) {
+        if (heroi.nome == registro.vencedor) {
+          heroi.ganharXp(50);
+        } else if (heroi.nome != registro.vencedor && registro.vencedor != 'Empate') {
+          heroi.ganharXp(10);
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +38,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           ArenaView(
             personagens: _personagens,
-            onBatalhaRealizada: (registro) {
-              setState(() => _historico.add(registro));
-            },
+            onBatalhaRealizada: _onBatalhaRealizada,
           ),
           PersonagensView(
             personagens: _personagens,

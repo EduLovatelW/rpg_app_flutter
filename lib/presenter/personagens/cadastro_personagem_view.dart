@@ -19,7 +19,8 @@ class CadastroPersonagemView extends StatefulWidget {
 
 class _CadastroPersonagemViewState extends State<CadastroPersonagemView> {
   final _nomeController = TextEditingController();
-  String _imgHeroi = 'assets/personagens/dwarf/dwarf_neutral.png';
+  final _reinoController = TextEditingController();
+  final _missaoController = TextEditingController();
 
   final List<Raca> _racas = [
     Humano(bonusVida: 10, bonusEscudo: 10, bonusAtaque: 10),
@@ -40,71 +41,23 @@ class _CadastroPersonagemViewState extends State<CadastroPersonagemView> {
   @override
   void dispose() {
     _nomeController.dispose();
+    _reinoController.dispose();
+    _missaoController.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro de Herói')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Image.asset(_imgHeroi, height: 180),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _nomeController,
-              decoration: const InputDecoration(
-                labelText: 'Nome do herói',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<Raca>(
-              decoration: const InputDecoration(
-                labelText: 'Raça',
-                border: OutlineInputBorder(),
-              ),
-              value: _racaSelecionada,
-              items: _racas.map((raca) => DropdownMenuItem(
-                value: raca,
-                child: Text(_getRacaNome(raca)),
-              )).toList(),
-              onChanged: (raca) {
-                setState(() {
-                  _racaSelecionada = raca;
-                  _imgHeroi = _getImagem();
-                });
-              },
-            ),
-            const SizedBox(height: 16),
-            DropdownButtonFormField<Arquetipo>(
-              decoration: const InputDecoration(
-                labelText: 'Arquétipo',
-                border: OutlineInputBorder(),
-              ),
-              value: _arquetipoSelecionado,
-              items: _arquetipos.map((arq) => DropdownMenuItem(
-                value: arq,
-                child: Text(_getArquetipoNome(arq)),
-              )).toList(),
-              onChanged: (arq) {
-                setState(() => _arquetipoSelecionado = arq);
-              },
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _salvar,
-                child: const Text('Criar Herói'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  String _getImagem() {
+    String racaStr = 'dwarf';
+    String arquetipoStr = 'neutral';
+    if (_racaSelecionada is Humano) racaStr = 'human';
+    else if (_racaSelecionada is Orc) racaStr = 'orc';
+    else if (_racaSelecionada is Elfo) racaStr = 'elf';
+    else if (_racaSelecionada is Anao) racaStr = 'dwarf';
+    if (_arquetipoSelecionado is Guerreiro) arquetipoStr = 'warrior';
+    else if (_arquetipoSelecionado is Mago) arquetipoStr = 'mage';
+    else if (_arquetipoSelecionado is Arqueiro) arquetipoStr = 'archer';
+    else arquetipoStr = 'neutral';
+    return 'assets/personagens/$racaStr/${racaStr}_$arquetipoStr.png';
   }
 
   String _getRacaNome(Raca raca) {
@@ -120,30 +73,20 @@ class _CadastroPersonagemViewState extends State<CadastroPersonagemView> {
     return 'Arqueiro';
   }
 
-  String _getImagem() {
-    if (_racaSelecionada is Humano) return 'assets/personagens/human/human_neutral.png';
-    if (_racaSelecionada is Orc) return 'assets/personagens/orc/orc_neutral.png';
-    if (_racaSelecionada is Elfo) return 'assets/personagens/elf/elf_neutral.png';
-    return 'assets/personagens/dwarf/dwarf_neutral.png';
-  }
-
   void _salvar() {
     if (_nomeController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Digite o nome do herói!')),
-      );
+        const SnackBar(content: Text('Digite o nome do herói!')));
       return;
     }
     if (_racaSelecionada == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecione uma raça!')),
-      );
+        const SnackBar(content: Text('Selecione uma raça!')));
       return;
     }
     if (_arquetipoSelecionado == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Selecione um arquétipo!')),
-      );
+        const SnackBar(content: Text('Selecione um arquétipo!')));
       return;
     }
 
@@ -155,10 +98,112 @@ class _CadastroPersonagemViewState extends State<CadastroPersonagemView> {
       ataque: 10,
       raca: _racaSelecionada!,
       arquetipo: _arquetipoSelecionado!,
-      reino: 'Desconhecido',
-      missao: 'Sobreviver',
+      reino: _reinoController.text.isEmpty ? 'Desconhecido' : _reinoController.text,
+      missao: _missaoController.text.isEmpty ? 'Sobreviver' : _missaoController.text,
     );
 
     Navigator.pop(context, heroi);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Criar Herói')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E1E2E),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.amber),
+              ),
+              child: Column(
+                children: [
+                  Image.asset(_getImagem(), height: 150),
+                  const SizedBox(height: 8),
+                  Text(
+                    _nomeController.text.isEmpty ? 'Seu herói' : _nomeController.text,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _nomeController,
+              onChanged: (_) => setState(() {}),
+              decoration: const InputDecoration(
+                labelText: 'Nome do herói',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+              ),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<Raca>(
+              decoration: const InputDecoration(
+                labelText: 'Raça',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.category),
+              ),
+              value: _racaSelecionada,
+              items: _racas.map((raca) => DropdownMenuItem(
+                value: raca,
+                child: Text(_getRacaNome(raca)),
+              )).toList(),
+              onChanged: (raca) => setState(() => _racaSelecionada = raca),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<Arquetipo>(
+              decoration: const InputDecoration(
+                labelText: 'Arquétipo',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.auto_awesome),
+              ),
+              value: _arquetipoSelecionado,
+              items: _arquetipos.map((arq) => DropdownMenuItem(
+                value: arq,
+                child: Text(_getArquetipoNome(arq)),
+              )).toList(),
+              onChanged: (arq) => setState(() => _arquetipoSelecionado = arq),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _reinoController,
+              decoration: const InputDecoration(
+                labelText: 'Reino (opcional)',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.castle),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: _missaoController,
+              decoration: const InputDecoration(
+                labelText: 'Missão (opcional)',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.flag),
+              ),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.check),
+                label: const Text('Criar Herói', style: TextStyle(fontSize: 16)),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  backgroundColor: Colors.amber,
+                  foregroundColor: Colors.black,
+                ),
+                onPressed: _salvar,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

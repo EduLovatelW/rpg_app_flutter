@@ -128,11 +128,41 @@ class PersonagensView extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(heroi.nome, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amber)),
-                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(heroi.nome,
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amber)),
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.amber.withOpacity(0.2),
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: Colors.amber),
+                                        ),
+                                        child: Text('Nv ${heroi.nivel}',
+                                          style: const TextStyle(color: Colors.amber, fontSize: 12, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 2),
                                   Text('${getRacaNome(heroi.raca)} • ${getArquetipoNome(heroi.arquetipo)}',
                                     style: TextStyle(color: Colors.grey[400], fontSize: 13)),
-                                  const SizedBox(height: 6),
+                                  const SizedBox(height: 4),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(4),
+                                    child: LinearProgressIndicator(
+                                      value: heroi.xp / heroi.xpParaProximoNivel,
+                                      backgroundColor: Colors.grey.shade800,
+                                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
+                                      minHeight: 4,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text('XP: ${heroi.xp}/${heroi.xpParaProximoNivel}',
+                                    style: TextStyle(color: Colors.grey[500], fontSize: 11)),
+                                  const SizedBox(height: 4),
                                   Row(
                                     children: [
                                       _statChip(Icons.favorite, '${heroi.vidaMaxima}', Colors.redAccent),
