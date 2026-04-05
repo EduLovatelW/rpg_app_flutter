@@ -5,6 +5,7 @@ import 'package:rpg_flutter/entities/arquetipo.dart';
 class Monstro extends Personagem {
   final String _origem;
   final String _tipoCriatura;
+  final String _imagem;
 
   Monstro({
     required String nome,
@@ -16,8 +17,10 @@ class Monstro extends Personagem {
     required Arquetipo arquetipo,
     required String origem,
     required String tipoCriatura,
+    required String imagem,
   })  : _origem = origem,
         _tipoCriatura = tipoCriatura,
+        _imagem = imagem,
         super(
           nome: nome,
           vida: vida,
@@ -26,9 +29,24 @@ class Monstro extends Personagem {
           ataque: ataque,
           raca: raca,
           arquetipo: arquetipo,
-          
         );
 
   String get origem => _origem;
   String get tipoCriatura => _tipoCriatura;
+  String get imagem => _imagem;
+
+  Monstro copiar() {
+    return Monstro(
+      nome: nome,
+      vida: vidaMaxima,
+      velocidade: velocidade,
+      escudo: escudo,
+      ataque: ataque,
+      raca: raca,
+      arquetipo: arquetipo,
+      origem: _origem,
+      tipoCriatura: _tipoCriatura,
+      imagem: _imagem,
+    );
+  }
 }
