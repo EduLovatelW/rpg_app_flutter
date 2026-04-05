@@ -9,15 +9,18 @@ import 'package:rpg_flutter/entities/arquetipo.dart';
 import 'package:rpg_flutter/entities/guerreiro.dart';
 import 'package:rpg_flutter/entities/mago.dart';
 import 'package:rpg_flutter/presenter/personagens/cadastro_personagem_view.dart';
+import 'package:rpg_flutter/presenter/personagens/detalhe_personagem_view.dart';
 
 class PersonagensView extends StatelessWidget {
   final List<Heroi> personagens;
   final Function(Heroi) onPersonagemAdicionado;
+  final Function(int) onPersonagemRemovido;
 
   const PersonagensView({
     super.key,
     required this.personagens,
     required this.onPersonagemAdicionado,
+    required this.onPersonagemRemovido,
   });
 
   String getImagem(Heroi heroi) {
@@ -58,15 +61,11 @@ class PersonagensView extends StatelessWidget {
                 children: [
                   const Icon(Icons.person_add, size: 64, color: Colors.amber),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Nenhum herói criado ainda.',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                  const Text('Nenhum herói criado ainda.',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 8),
-                  Text(
-                    'Toque em + para criar seu primeiro herói!',
-                    style: TextStyle(color: Colors.grey[400]),
-                  ),
+                  Text('Toque em + para criar seu primeiro herói!',
+                    style: TextStyle(color: Colors.grey[400])),
                 ],
               ),
             )
@@ -75,38 +74,81 @@ class PersonagensView extends StatelessWidget {
               itemCount: personagens.length,
               itemBuilder: (context, index) {
                 final heroi = personagens[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.asset(getImagem(heroi), width: 60, height: 60, fit: BoxFit.contain),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(heroi.nome, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amber)),
-                              const SizedBox(height: 4),
-                              Text('${getRacaNome(heroi.raca)} • ${getArquetipoNome(heroi.arquetipo)}', style: TextStyle(color: Colors.grey[400], fontSize: 13)),
-                              const SizedBox(height: 6),
-                              Row(
+                return Dismissible(
+                  key: Key(heroi.nome + index.toString()),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade800,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(Icons.delete, color: Colors.white),
+                  ),
+                  confirmDismiss: (direction) async {
+                    return await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        backgroundColor: const Color(0xFF1E1E2E),
+                        title: const Text('Deletar herói?'),
+                        content: Text('Tem certeza que quer deletar ${heroi.nome}?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Deletar', style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  onDismissed: (_) => onPersonagemRemovido(index),
+                  child: Card(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => DetalhePersonagemView(heroi: heroi)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.asset(getImagem(heroi), width: 60, height: 60, fit: BoxFit.contain),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _statChip(Icons.favorite, '${heroi.vidaMaxima}', Colors.redAccent),
-                                  const SizedBox(width: 8),
-                                  _statChip(Icons.shield, '${heroi.escudo}', Colors.blueAccent),
-                                  const SizedBox(width: 8),
-                                  _statChip(Icons.bolt, '${heroi.ataque}', Colors.orangeAccent),
+                                  Text(heroi.nome, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.amber)),
+                                  const SizedBox(height: 4),
+                                  Text('${getRacaNome(heroi.raca)} • ${getArquetipoNome(heroi.arquetipo)}',
+                                    style: TextStyle(color: Colors.grey[400], fontSize: 13)),
+                                  const SizedBox(height: 6),
+                                  Row(
+                                    children: [
+                                      _statChip(Icons.favorite, '${heroi.vidaMaxima}', Colors.redAccent),
+                                      const SizedBox(width: 8),
+                                      _statChip(Icons.shield, '${heroi.escudo}', Colors.blueAccent),
+                                      const SizedBox(width: 8),
+                                      _statChip(Icons.bolt, '${heroi.ataque}', Colors.orangeAccent),
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                            const Icon(Icons.chevron_right, color: Colors.grey),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 );

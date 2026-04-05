@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'arquetipo.dart';
 
 class Mago extends Arquetipo {
+  final _random = Random();
+
   Mago()
       : super(
           bonusVida: 3,
@@ -12,5 +15,12 @@ class Mago extends Arquetipo {
   @override
   String habilidadeEspecial() {
     return 'O Mago lança uma bola de fogo mágica!';
+  }
+
+  // 30% de chance de causar dano dobrado
+  @override
+  int aplicarHabilidadeAtaque(int danoBase) {
+    if (_random.nextInt(100) < 30) return danoBase;
+    return 0;
   }
 }

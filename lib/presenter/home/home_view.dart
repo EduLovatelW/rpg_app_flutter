@@ -34,6 +34,9 @@ class _HomeViewState extends State<HomeView> {
             onPersonagemAdicionado: (heroi) {
               setState(() => _personagens.add(heroi));
             },
+            onPersonagemRemovido: (index) {
+              setState(() => _personagens.removeAt(index));
+            },
           ),
           HistoricoView(historico: _historico),
         ],

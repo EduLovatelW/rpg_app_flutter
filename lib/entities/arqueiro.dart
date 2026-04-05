@@ -13,4 +13,8 @@ class Arqueiro extends Arquetipo {
   String habilidadeEspecial() {
     return 'O Arqueiro dispara uma flecha certeira à distância!';
   }
+
+  // Arqueiro sempre ataca primeiro
+  @override
+  bool atacaPrimeiro() => true;
 }

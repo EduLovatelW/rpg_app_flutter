@@ -1,6 +1,9 @@
+import 'dart:math';
 import 'arquetipo.dart';
 
 class Guerreiro extends Arquetipo {
+  final _random = Random();
+
   Guerreiro()
       : super(
           bonusVida: 5,
@@ -12,5 +15,12 @@ class Guerreiro extends Arquetipo {
   @override
   String habilidadeEspecial() {
     return 'O Guerreiro usa um golpe poderoso com sua espada!';
+  }
+
+  // 25% de chance de bloquear todo o dano
+  @override
+  int aplicarHabilidadeDefesa(int dano) {
+    if (_random.nextInt(100) < 25) return 0;
+    return dano;
   }
 }
