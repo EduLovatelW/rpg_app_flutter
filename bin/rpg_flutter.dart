@@ -7,7 +7,7 @@ import 'package:rpg_flutter/entities/raca.dart';
 import 'package:rpg_flutter/entities/arquetipo.dart';
 
 
-// Subclasses de Raca
+
 class Humano extends Raca {
   Humano() : super(bonusVida: 5, bonusEscudo: 3, bonusAtaque: 2);
 }
@@ -16,7 +16,7 @@ class Orc extends Raca {
   Orc() : super(bonusVida: 8, bonusEscudo: 2, bonusAtaque: 4);
 }
 
-// Subclasses de Arquetipo
+
 class Guerreiro extends Arquetipo {
   Guerreiro()
       : super(
@@ -46,7 +46,7 @@ class Mago extends Arquetipo {
 void main() {
   final dado = Dado(lados: 20);
 
-  // Criação do herói
+  
   final batman = Heroi(
     nome: 'Batman',
     vida: 20,
@@ -59,7 +59,7 @@ void main() {
     missao: 'Matar o Espantalho',
   );
 
-  // Criação do monstro
+  
   final espantalho = Monstro(
     nome: 'Espantalho',
     vida: 20,
@@ -72,7 +72,7 @@ void main() {
     tipoCriatura: 'Humano',
   );
 
-  // Define ordem de ataque pelo duelo
+  
   Personagem atacante, defensor;
   if (batman.velocidade >= espantalho.velocidade) {
     atacante = batman;
@@ -84,7 +84,7 @@ void main() {
 
   print("Início do duelo: ${batman.nome} vs ${espantalho.nome}\n");
 
-  // Loop do duelo
+  
   while (batman.estaVivo() && espantalho.estaVivo()) {
     final valorDado = dado.jogarDado();
     print(
@@ -93,7 +93,7 @@ void main() {
     print(
         "Status: ${batman.nome} (Vida: ${batman.vida}) | ${espantalho.nome} (Vida: ${espantalho.vida})\n");
 
-    // troca os papéis
+    
     final temp = atacante;
     atacante = defensor;
     defensor = temp;
@@ -102,11 +102,11 @@ void main() {
   final vencedor = batman.estaVivo() ? batman : espantalho;
   print("O vencedor foi: ${vencedor.nome}\n");
 
-  // Status final dos personagens
+  
   batman.exibirStatus();
   espantalho.exibirStatus();
 
-  // Habilidades especiais
+  
   print('Habilidade especial do ${batman.nome}: ${batman.arquetipo.habilidadeEspecial()}');
   print('Habilidade especial do ${espantalho.nome}: ${espantalho.arquetipo.habilidadeEspecial()}');
 }
