@@ -17,7 +17,7 @@ class Guerreiro extends Arquetipo {
     return 'O Guerreiro usa um golpe poderoso com sua espada!';
   }
 
-  // 25% de chance de bloquear todo o dano
+  
   @override
   int aplicarHabilidadeDefesa(int dano) {
     if (_random.nextInt(100) < 25) return 0;

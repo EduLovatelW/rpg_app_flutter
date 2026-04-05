@@ -23,12 +23,12 @@ abstract class Arquetipo {
 
   String habilidadeEspecial();
 
-  // Retorna dano extra (0 = sem efeito)
+  
   int aplicarHabilidadeAtaque(int danoBase) => 0;
 
-  // Retorna dano reduzido pelo efeito defensivo
+  
   int aplicarHabilidadeDefesa(int dano) => dano;
 
-  // Retorna true se o arquétipo deve atacar primeiro independente de velocidade
+  
   bool atacaPrimeiro() => false;
 }

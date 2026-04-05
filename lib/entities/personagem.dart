@@ -37,7 +37,7 @@ class Personagem {
   Raca get raca => _raca;
   Arquetipo get arquetipo => _arquetipo;
 
-  // Retorna descrição do efeito especial se ativou, ou null
+  
   String? defender(int dano) {
     int danoFinal = dano - _escudo;
     if (danoFinal < 0) danoFinal = 0;
@@ -51,7 +51,7 @@ class Personagem {
     return null;
   }
 
-  // Retorna dano causado e descrição de habilidade especial
+  
   AttackResult atacar(Personagem oponente, int valorDado) {
     final danoBase = _ataque + valorDado;
     final danoExtra = _arquetipo.aplicarHabilidadeAtaque(danoBase);

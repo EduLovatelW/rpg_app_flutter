@@ -1,13 +1,13 @@
-import 'dart:math'; // Importa a biblioteca para gerar números aleatórios
+import 'dart:math'; 
 
-class Dado { // Declara a classe Dado
-  final int _lados; // Atributo agora é privado
+class Dado { 
+  final int _lados; 
 
-  Dado({required int lados}) : _lados = lados; // Construtor inicializa o atributo privado
+  Dado({required int lados}) : _lados = lados; 
 
-  int jogarDado() { // Método para "jogar" o dado
-    if (_lados == 1) return 1; // Se o dado tem 1 lado, sempre retorna 1
-    final random = Random(); // Cria um gerador de números aleatórios
-    return random.nextInt(_lados) + 1; // Sorteia um número entre 1 e o número de lados
+  int jogarDado() { 
+    if (_lados == 1) return 1; 
+    final random = Random(); 
+    return random.nextInt(_lados) + 1; 
   }
 }

@@ -17,7 +17,7 @@ class Mago extends Arquetipo {
     return 'O Mago lança uma bola de fogo mágica!';
   }
 
-  // 30% de chance de causar dano dobrado
+  
   @override
   int aplicarHabilidadeAtaque(int danoBase) {
     if (_random.nextInt(100) < 30) return danoBase;

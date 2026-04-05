@@ -53,7 +53,7 @@ class DetalhePersonagemView extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Avatar grande
+            
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -79,7 +79,7 @@ class DetalhePersonagemView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Stats
+            
             const Align(
               alignment: Alignment.centerLeft,
               child: Text('Atributos', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amber)),
@@ -90,7 +90,7 @@ class DetalhePersonagemView extends StatelessWidget {
             _statRow(Icons.bolt, 'Ataque', '${heroi.ataque}', Colors.orangeAccent),
             _statRow(Icons.speed, 'Velocidade', '${heroi.velocidade}', Colors.greenAccent),
             const SizedBox(height: 20),
-            // Habilidade especial
+            
             const Align(
               alignment: Alignment.centerLeft,
               child: Text('Habilidade Especial', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amber)),
@@ -116,7 +116,7 @@ class DetalhePersonagemView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // Reino e missão
+            
             const Align(
               alignment: Alignment.centerLeft,
               child: Text('Lore', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.amber)),

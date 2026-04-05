@@ -14,7 +14,7 @@ class Arqueiro extends Arquetipo {
     return 'O Arqueiro dispara uma flecha certeira à distância!';
   }
 
-  // Arqueiro sempre ataca primeiro
+  
   @override
   bool atacaPrimeiro() => true;
 }
